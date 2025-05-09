@@ -1,0 +1,92 @@
+version: "3.8"
+
+services:
+  zookeeper:
+    image: confluentinc/cp-zookeeper:latest
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181
+    networks:
+      - app-network
+
+  kafka:
+    image: confluentinc/cp-kafka:latest
+    environment:
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+    depends_on:
+      - zookeeper
+    ports:
+      - "9092:9092" 
+    networks:
+      - app-network
+
+  mongo:
+    image: mongo:6
+    container_name: mongodb
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo-data:/data/db
+    networks:
+      - app-network
+
+  user-service:
+    build:
+      context: ./user-service
+    container_name: user-service
+    env_file:
+      - ./user-service/.env
+    ports:
+      - "5000:5000"
+      - "50051:50051"
+    depends_on:
+      - mongo
+      - kafka
+    networks:
+      - app-network
+
+  appointment-service:
+    build:
+      context: ./appointment-service
+    container_name: appointment-service
+    env_file:
+      - ./appointment-service/.env
+    ports:
+      - "5001:5001"
+    depends_on:
+      - mongo
+      - kafka
+    networks:
+      - app-network
+
+  notification-service:
+    build:
+      context: ./notification-service
+    container_name: notification-service
+    env_file:
+      - ./notification-service/src/.env
+    depends_on:
+      - kafka
+    networks:
+      - app-network
+  
+  api-gateway:
+    build: ./api-gateway
+    ports:
+      - "4000:4000"
+    depends_on:
+      - appointment-service
+      - user-service
+    env_file:
+    - ./api-gateway/.env
+    networks:
+      - app-network
+
+
+
+networks:
+  app-network:
+
+volumes:
+  mongo-data:

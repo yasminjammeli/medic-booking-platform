@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg viewBox="0 0 800 600" xmlns="http://www.w3.org/2000/svg">
+  <!-- Client (Web) -->
+  <rect x="350" y="30" width="150" height="60" rx="5" ry="5" fill="#f0f0f0" stroke="#333" stroke-width="2"/>
+  <text x="425" y="65" font-family="Arial" font-size="14" text-anchor="middle">Client (Web)</text>
+  
+  <!-- Arrow down -->
+  <line x1="425" y1="90" x2="425" y2="130" stroke="#333" stroke-width="2"/>
+  <polygon points="425,130 420,120 430,120" fill="#333"/>
+  
+  <!-- API Gateway -->
+  <rect x="325" y="130" width="200" height="60" rx="5" ry="5" fill="#f0f0f0" stroke="#333" stroke-width="2"/>
+  <text x="425" y="160" font-family="Arial" font-size="14" text-anchor="middle">API Gateway</text>
+  <text x="425" y="180" font-family="Arial" font-size="12" text-anchor="middle">(GraphQL &amp; REST)</text>
+  
+  <!-- Arrows to services -->
+  <line x1="425" y1="190" x2="425" y2="210" stroke="#333" stroke-width="2"/>
+  <line x1="425" y1="210" x2="175" y2="210" stroke="#333" stroke-width="2"/>
+  <line x1="425" y1="210" x2="675" y2="210" stroke="#333" stroke-width="2"/>
+  
+  <line x1="175" y1="210" x2="175" y2="240" stroke="#333" stroke-width="2"/>
+  <polygon points="175,240 170,230 180,230" fill="#333"/>
+  
+  <line x1="425" y1="210" x2="425" y2="240" stroke="#333" stroke-width="2"/>
+  <polygon points="425,240 420,230 430,230" fill="#333"/>
+  
+  <line x1="675" y1="210" x2="675" y2="240" stroke="#333" stroke-width="2"/>
+  <polygon points="675,240 670,230 680,230" fill="#333"/>
+  
+  <!-- User Service -->
+  <rect x="75" y="240" width="200" height="80" rx="5" ry="5" fill="#f0f0f0" stroke="#333" stroke-width="2"/>
+  <text x="175" y="270" font-family="Arial" font-size="14" text-anchor="middle">User Service</text>
+  <text x="175" y="290" font-family="Arial" font-size="12" text-anchor="middle">(gRPC &amp; REST API)</text>
+  
+  <!-- Appointment Service -->
+  <rect x="325" y="240" width="200" height="80" rx="5" ry="5" fill="#f0f0f0" stroke="#333" stroke-width="2"/>
+  <text x="425" y="270" font-family="Arial" font-size="14" text-anchor="middle">Appointment Service</text>
+  <text x="425" y="290" font-family="Arial" font-size="12" text-anchor="middle">(Kafka Producer)</text>
+  
+  <!-- Notification Service -->
+  <rect x="575" y="240" width="200" height="80" rx="5" ry="5" fill="#f0f0f0" stroke="#333" stroke-width="2"/>
+  <text x="675" y="270" font-family="Arial" font-size="14" text-anchor="middle">Notification Service</text>
+  <text x="675" y="290" font-family="Arial" font-size="12" text-anchor="middle">(Kafka Consumer)</text>
+  
+  <!-- Arrows to databases -->
+  <line x1="175" y1="320" x2="175" y2="370" stroke="#333" stroke-width="2"/>
+  <polygon points="175,370 170,360 180,360" fill="#333"/>
+  
+  <line x1="425" y1="320" x2="425" y2="370" stroke="#333" stroke-width="2"/>
+  <polygon points="425,370 420,360 430,360" fill="#333"/>
+  
+  <line x1="675" y1="320" x2="675" y2="370" stroke="#333" stroke-width="2"/>
+  <polygon points="675,370 670,360 680,360" fill="#333"/>
+  
+  <!-- MongoDB (Users) -->
+  <rect x="75" y="370" width="200" height="60" rx="5" ry="5" fill="#f0f0f0" stroke="#333" stroke-width="2"/>
+  <text x="175" y="405" font-family="Arial" font-size="14" text-anchor="middle">MongoDB (Users)</text>
+  
+  <!-- MongoDB (Appts) -->
+  <rect x="325" y="370" width="200" height="60" rx="5" ry="5" fill="#f0f0f0" stroke="#333" stroke-width="2"/>
+  <text x="425" y="405" font-family="Arial" font-size="14" text-anchor="middle">MongoDB (Appts)</text>
+  
+  <!-- Email Service -->
+  <rect x="575" y="370" width="200" height="60" rx="5" ry="5" fill="#f0f0f0" stroke="#333" stroke-width="2"/>
+  <text x="675" y="405" font-family="Arial" font-size="14" text-anchor="middle">Email Service</text>
+  
+  <!-- Kafka Broker -->
+  <rect x="200" y="480" width="450" height="60" rx="5" ry="5" fill="#f0f0f0" stroke="#333" stroke-width="2"/>
+  <text x="425" y="510" font-family="Arial" font-size="14" text-anchor="middle">Kafka Broker (Event-Driven Communication)</text>
+  
+  <!-- Connection lines to Kafka -->
+  <line x1="175" y1="430" x2="175" y2="450" stroke="#333" stroke-width="2" stroke-dasharray="5,5"/>
+  <line x1="175" y1="450" x2="425" y2="450" stroke="#333" stroke-width="2" stroke-dasharray="5,5"/>
+  <line x1="425" y1="450" x2="425" y2="480" stroke="#333" stroke-width="2" stroke-dasharray="5,5"/>
+  <polygon points="425,480 420,470 430,470" fill="#333"/>
+  
+  <line x1="425" y1="430" x2="425" y2="480" stroke="#333" stroke-width="2" stroke-dasharray="5,5"/>
+  <polygon points="425,480 420,470 430,470" fill="#333"/>
+  
+  <line x1="675" y1="430" x2="675" y2="450" stroke="#333" stroke-width="2" stroke-dasharray="5,5"/>
+  <line x1="675" y1="450" x2="425" y2="450" stroke="#333" stroke-width="2" stroke-dasharray="5,5"/>
+</svg>
