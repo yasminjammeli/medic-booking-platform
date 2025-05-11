@@ -19,11 +19,16 @@ const run = async () => {
       console.log("📥 New appointment event received:", data);
 
       // Ex: send to patient email (you can adapt this)
-      await sendAppointmentEmail(
-        data.email || 'test@example.com', // adapt as needed
-        'Rendez-vous confirmé',
-        `Votre rendez-vous avec Dr. ${data.doctorName} est confirmé pour le ${data.date}.`
-      );
+      if (data.patientEmail) {
+  await sendAppointmentEmail(
+    data.patientEmail,
+    'Rendez-vous confirmé',
+    `Votre rendez-vous avec Dr. ${data.doctorName} est confirmé pour le ${data.date}.`
+  );
+} else {
+  console.warn("❗ patientEmail missing in Kafka message:", data);
+}
+
     }
   });
 };

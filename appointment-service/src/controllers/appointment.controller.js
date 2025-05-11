@@ -42,7 +42,11 @@ exports.create = async (req, res) => {
     // Envoyer l'événement à Kafka
     await produceAppointmentEvent({
       type: 'appointment_created',
-      data: appointment,
+      data: {
+    ...appointment._doc,
+    patientEmail: patient.email,   // Add this line
+    doctorName: doctor.name        // Optional: more personalized
+  }
     });
 
     res.status(201).json(appointment);
