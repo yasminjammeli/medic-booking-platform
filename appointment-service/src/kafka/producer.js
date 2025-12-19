@@ -22,3 +22,4 @@ const produceAppointmentEvent = async (payload) => {
 };
 
 module.exports = { produceAppointmentEvent };
+ 
