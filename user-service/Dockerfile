@@ -14,4 +14,4 @@ RUN npm install
 COPY . .
 
 # Étape 6 : Spécifie la commande de démarrage
-CMD ["npm", "start"]
+CMD ["node", "src/app.js"]
