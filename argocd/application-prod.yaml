@@ -1,0 +1,33 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: medic-booking-prod
+  namespace: argocd
+spec:
+  project: default
+  
+  source:
+    repoURL: https://github.com/yasminjammeli/medic-booking-platform.git
+    targetRevision: main  
+    path: helm/medic-booking
+    helm:
+      valueFiles:
+        - values-prod.yaml
+  
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: medic-booking-prod
+  
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+      allowEmpty: false
+    syncOptions:
+      - CreateNamespace=true
+    retry:
+      limit: 5
+      backoff:
+        duration: 5s
+        factor: 2
+        maxDuration: 3m
