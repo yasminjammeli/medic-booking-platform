@@ -2,7 +2,7 @@ global:
   namespace: medic-booking-dev
 
 userService:
-  replicaCount: 1
+  replicaCount: 5
   resources:
     limits:
       cpu: 250m
