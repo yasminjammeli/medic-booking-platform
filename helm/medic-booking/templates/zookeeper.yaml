@@ -1,0 +1,48 @@
+{{- if .Values.zookeeper.enabled }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: zookeeper
+  namespace: {{ .Values.global.namespace }}
+  labels:
+    app: zookeeper
+    {{- include "medic-booking.labels" . | nindent 4 }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: zookeeper
+  template:
+    metadata:
+      labels:
+        app: zookeeper
+    spec:
+      containers:
+      - name: zookeeper
+        image: {{ .Values.zookeeper.image }}
+        ports:
+        - containerPort: {{ .Values.zookeeper.port }}
+          name: client
+        env:
+        - name: ZOOKEEPER_CLIENT_PORT
+          value: {{ .Values.zookeeper.port | quote }}
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: zookeeper-service
+  namespace: {{ .Values.global.namespace }}
+  labels:
+    app: zookeeper
+    {{- include "medic-booking.labels" . | nindent 4 }}
+spec:
+  selector:
+    app: zookeeper
+  ports:
+  - protocol: TCP
+    port: {{ .Values.zookeeper.port }}
+    targetPort: {{ .Values.zookeeper.port }}
+    name: client
+  type: ClusterIP
+{{- end }}

@@ -1,0 +1,122 @@
+# Configuration globale
+global:
+  namespace: medic-booking
+  imageRegistry: docker.io
+  imagePullPolicy: Always
+
+# Secrets
+secrets:
+  jwtSecret: 8e175919d034be1ddca71aa0ea3f2fd5c7df6eaad9b694dbda4e40ebeb4003ee79df669915459242de77e563721cdf881f8a9ff8aa854e4642f520db380e2f37  
+  email:
+    user: jammeliyasmin@gmail.com    
+    password: kekganqfchspmase
+
+# MongoDB
+mongodb:
+  enabled: true
+  image: mongo:6
+  port: 27017
+  persistence:
+    enabled: true
+    size: 5Gi
+    storageClass: ""
+
+# Zookeeper
+zookeeper:
+  enabled: true
+  image: wurstmeister/zookeeper:latest
+  port: 2181
+
+# Kafka
+kafka:
+  enabled: true
+  image: wurstmeister/kafka:latest
+  port: 9092
+  topics:
+    - name: appointment-created
+      partitions: 1
+      replication: 1
+
+# User Service
+userService:
+  enabled: true
+  replicaCount: 2
+  image:
+    repository: yasmin952/medic-user-service  
+    tag: latest
+  service:
+    type: ClusterIP
+    httpPort: 5000
+    grpcPort: 50051
+  env:
+    PORT: "5000"
+    MONGO_URI: "mongodb://mongodb-service:27017/user_service"
+  resources:
+    limits:
+      cpu: 500m
+      memory: 512Mi
+    requests:
+      cpu: 250m
+      memory: 256Mi
+
+# Appointment Service
+appointmentService:
+  enabled: true
+  replicaCount: 2
+  image:
+    repository: yasmin952/medic-appointment-service 
+    tag: latest
+  service:
+    type: ClusterIP
+    port: 5001
+  env:
+    PORT: "5001"
+    MONGO_URI: "mongodb://mongodb-service:27017/appointment_service"
+    USER_SERVICE_HOST: "user-service:50051"
+  resources:
+    limits:
+      cpu: 500m
+      memory: 512Mi
+    requests:
+      cpu: 250m
+      memory: 256Mi
+
+# Notification Service
+notificationService:
+  enabled: true
+  replicaCount: 1
+  image:
+    repository: yasmin952/medic-notification-service 
+    tag: latest
+  env:
+    KAFKA_BROKER: "kafka-service:9092"
+    KAFKA_TOPIC: "appointment-created"
+  resources:
+    limits:
+      cpu: 250m
+      memory: 256Mi
+    requests:
+      cpu: 100m
+      memory: 128Mi
+
+# API Gateway
+apiGateway:
+  enabled: true
+  replicaCount: 2
+  image:
+    repository: yasmin952/medic-api-gateway  
+    tag: latest
+  service:
+    type: LoadBalancer
+    port: 4000
+  env:
+    PORT: "4000"
+    APPOINTMENT_SERVICE_URL: "http://appointment-service:5001"
+    USER_SERVICE_URL: "http://user-service:5000"
+  resources:
+    limits:
+      cpu: 500m
+      memory: 512Mi
+    requests:
+      cpu: 250m
+      memory: 256Mi

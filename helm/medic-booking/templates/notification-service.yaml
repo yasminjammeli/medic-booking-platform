@@ -1,0 +1,41 @@
+{{- if .Values.notificationService.enabled }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: notification-service
+  namespace: {{ .Values.global.namespace }}
+  labels:
+    app: notification-service
+    {{- include "medic-booking.labels" . | nindent 4 }}
+spec:
+  replicas: {{ .Values.notificationService.replicaCount }}
+  selector:
+    matchLabels:
+      app: notification-service
+  template:
+    metadata:
+      labels:
+        app: notification-service
+    spec:
+      containers:
+      - name: notification-service
+        image: "{{ .Values.notificationService.image.repository }}:{{ .Values.notificationService.image.tag }}"
+        imagePullPolicy: {{ .Values.global.imagePullPolicy }}
+        env:
+        - name: KAFKA_BROKER
+          value: {{ .Values.notificationService.env.KAFKA_BROKER | quote }}
+        - name: KAFKA_TOPIC
+          value: {{ .Values.notificationService.env.KAFKA_TOPIC | quote }}
+        - name: EMAIL_USER
+          valueFrom:
+            secretKeyRef:
+              name: email-credentials
+              key: EMAIL_USER
+        - name: EMAIL_PASS
+          valueFrom:
+            secretKeyRef:
+              name: email-credentials
+              key: EMAIL_PASS
+        resources:
+          {{- toYaml .Values.notificationService.resources | nindent 10 }}
+{{- end }}

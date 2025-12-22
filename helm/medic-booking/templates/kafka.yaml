@@ -1,0 +1,58 @@
+{{- if .Values.kafka.enabled }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: kafka
+  namespace: {{ .Values.global.namespace }}
+  labels:
+    app: kafka
+    {{- include "medic-booking.labels" . | nindent 4 }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: kafka
+  template:
+    metadata:
+      labels:
+        app: kafka
+    spec:
+      containers:
+      - name: kafka
+        image: {{ .Values.kafka.image }}
+        ports:
+        - containerPort: {{ .Values.kafka.port }}
+          name: kafka
+        env:
+        - name: KAFKA_ZOOKEEPER_CONNECT
+          value: "zookeeper-service:{{ .Values.zookeeper.port }}"
+        - name: KAFKA_ADVERTISED_LISTENERS
+          value: "PLAINTEXT://kafka-service:{{ .Values.kafka.port }}"
+        - name: KAFKA_LISTENERS
+          value: "PLAINTEXT://0.0.0.0:{{ .Values.kafka.port }}"
+        - name: KAFKA_AUTO_CREATE_TOPICS_ENABLE
+          value: "true"
+        {{- if .Values.kafka.topics }}
+        - name: KAFKA_CREATE_TOPICS
+          value: {{ range $index, $topic := .Values.kafka.topics }}{{ if $index }},{{ end }}{{ $topic.name }}:{{ $topic.partitions }}:{{ $topic.replication }}{{ end }}
+        {{- end }}
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: kafka-service
+  namespace: {{ .Values.global.namespace }}
+  labels:
+    app: kafka
+    {{- include "medic-booking.labels" . | nindent 4 }}
+spec:
+  selector:
+    app: kafka
+  ports:
+  - protocol: TCP
+    port: {{ .Values.kafka.port }}
+    targetPort: {{ .Values.kafka.port }}
+    name: kafka
+  type: ClusterIP
+{{- end }}

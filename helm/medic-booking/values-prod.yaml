@@ -1,0 +1,44 @@
+global:
+  namespace: medic-booking-prod
+
+userService:
+  replicaCount: 3
+  resources:
+    limits:
+      cpu: 1000m
+      memory: 1Gi
+    requests:
+      cpu: 500m
+      memory: 512Mi
+
+appointmentService:
+  replicaCount: 3
+  resources:
+    limits:
+      cpu: 1000m
+      memory: 1Gi
+    requests:
+      cpu: 500m
+      memory: 512Mi
+
+notificationService:
+  replicaCount: 2
+
+apiGateway:
+  replicaCount: 3
+  service:
+    port: 4000
+    type: LoadBalancer
+    
+  resources:
+    limits:
+      cpu: 1000m
+      memory: 1Gi
+    requests:
+      cpu: 500m
+      memory: 512Mi
+  
+
+mongodb:
+  persistence:
+    size: 20Gi
