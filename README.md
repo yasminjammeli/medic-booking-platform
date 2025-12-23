@@ -600,7 +600,7 @@ kubectl logs -n medic-booking-prod -l app=kafka
 ## 👤 Auteur
 
 **Votre Nom**
-- GitHub : [@votre-username](https://github.com/yasminjammeli)
+- GitHub : [@yasminjammeli](https://github.com/yasminjammeli)
 - Email : yasmina.jammeli@polytechnicien.tn
 
 
