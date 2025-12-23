@@ -1,0 +1,52 @@
+# User Service
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: user-service-monitor
+  namespace: medic-booking-prod
+  labels:
+    app: user-service
+spec:
+  selector:
+    matchLabels:
+      app: user-service
+  endpoints:
+  - port: http
+    path: /metrics
+    interval: 30s
+
+---
+# Appointment Service
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: appointment-service-monitor
+  namespace: medic-booking-prod
+  labels:
+    app: appointment-service
+spec:
+  selector:
+    matchLabels:
+      app: appointment-service
+  endpoints:
+  - port: http
+    path: /metrics
+    interval: 30s
+
+---
+# API Gateway
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: api-gateway-monitor
+  namespace: medic-booking-prod
+  labels:
+    app: api-gateway
+spec:
+  selector:
+    matchLabels:
+      app: api-gateway
+  endpoints:
+  - port: http
+    path: /metrics
+    interval: 30s

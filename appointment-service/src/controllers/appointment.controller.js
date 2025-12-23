@@ -1,6 +1,6 @@
 const Appointment = require('../models/appointment.model');
 const { produceAppointmentEvent } = require('../kafka/producer');
-const userClient = require('../grpc/userClient'); // ← ajouter ceci
+const userClient = require('../grpc/userClient'); 
 
 async function validateUser(userId) {
   console.log(`Tentative de validation de l'utilisateur ${userId} via gRPC`);
@@ -38,14 +38,18 @@ exports.create = async (req, res) => {
       date,
       description
     });
+    // Incrementer le compteur
+    if (req.app.locals.appointmentCounter) {
+      req.app.locals.appointmentCounter.inc();
+    }
 
     // Envoyer l'événement à Kafka
     await produceAppointmentEvent({
       type: 'appointment_created',
       data: {
     ...appointment._doc,
-    patientEmail: patient.email,   // Add this line
-    doctorName: doctor.name        // Optional: more personalized
+    patientEmail: patient.email,   
+    doctorName: doctor.name       
   }
     });
 
@@ -85,6 +89,12 @@ exports.cancel = async (req, res) => {
     if (!updated) {
       return res.status(404).json({ error: 'Rendez-vous non trouvé' });
     }
+
+    // Incrémenter le compteur 
+    if (req.app.locals.appointmentCancelCounter) {
+      req.app.locals.appointmentCancelCounter.inc();
+    }
+
 
     res.json(updated);
   } catch (err) {
